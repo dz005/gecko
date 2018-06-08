@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhi.deng
- * @since 2018-06-01
+ * @since 2018-06-08
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -53,7 +53,7 @@ public class Project implements Serializable {
     /**
      * 编码
      */
-    private String encoded;
+    private String encoding;
     /**
      * 描述
      */
@@ -110,7 +110,7 @@ public class Project implements Serializable {
 
     public static final String ICON_CLASS = "icon_class";
 
-    public static final String ENCODED = "encoded";
+    public static final String ENCODING = "encoding";
 
     public static final String DESCRIPTION = "description";
 

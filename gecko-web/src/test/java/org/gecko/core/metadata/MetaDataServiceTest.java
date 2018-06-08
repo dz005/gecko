@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 public class MetaDataServiceTest {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-         String url = "jdbc:mysql://localhost:3306/gecko?useSSL=false";
-         String username = "root";
+        String url = "jdbc:mysql://localhost:3306/gecko?useSSL=false";
+        String username = "root";
         String password = "root";
         MetaDataService metaDataService = new MetaDataServiceImpl();
         ConnectionInfo connectionInfo = new ConnectionInfo(url, username, password);

@@ -87,7 +87,7 @@ public class TableController {
     @GetMapping("/to_config/{id}")
     public String to_update(@PathVariable Long id, Model model) {
         model.addAttribute("bean", tableService.selectById(id));
-        model.addAttribute("fieldSetType", FieldGroupType.values());
+        model.addAttribute("fieldGroupTypes", FieldGroupType.values());
         model.addAttribute("widgetTypes", WidgetType.values());
         model.addAttribute("dataTypes", DataType.values());
         return PREFIX + "config";

@@ -27,7 +27,7 @@ public class GenEntity {
      * 实体名
      */
     @NotBlank
-    private String name;
+    private String entityName;
     /**
      * 注释
      */

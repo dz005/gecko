@@ -147,6 +147,32 @@
         $(".btnAdd").click(function () {
             openLayerRight(false, ctxPath + "/table/to_import?projectId=" + projectId);
         });
+        $(".btnDownload").click(function () {
+            var tableIds = [];
+            var selections = $table.bootstrapTable('getSelections');
+            if (selections.length > 0) {
+                for (var i = 0; i < selections.length; i++) {
+                    tableIds.push(selections[i].id);
+                }
+            }
+            if (tableIds.length > 0) {
+                layer.load();
+                $.post(ctxPath + "/gen/batch", {
+                        "projectId": projectId,
+                        "tableIds[]": tableIds
+                    },
+                    function (data) {
+                        layer.closeAll('loading');
+                        if (data.code == 0) {
+                            layer.msg('生成成功', {icon: 6, time: 2000});
+                        } else {
+                            alertError(data.msg);
+                        }
+                    }
+                );
+            }
+        });
+
     })(document, window, jQuery);
     //]]>
 </script>

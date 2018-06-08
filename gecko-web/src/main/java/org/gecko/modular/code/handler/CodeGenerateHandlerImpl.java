@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.gecko.core.gen.modal.GenEntity;
 import org.gecko.core.gen.modal.GenGlobal;
 import org.gecko.core.gen.modal.GenTemplate;
+import org.gecko.core.gen.parser.Parser;
 import org.gecko.modular.code.provider.GenEntityProvider;
 import org.gecko.modular.code.provider.GenGlobalProvider;
 import org.gecko.modular.code.provider.GenTemplateProvider;
@@ -29,6 +30,8 @@ public class CodeGenerateHandlerImpl implements CodeGenerateHandler {
     private GenEntityProvider genEntityProvider;
     @Autowired
     private GenTemplateProvider genTemplateProvider;
+    @Autowired
+    private Parser parser;
 
     File generate(Long projectId, List<Long> tableIds) {
         GenGlobal genGlobal = genGlobalProvider.getGenGlobal(projectId);

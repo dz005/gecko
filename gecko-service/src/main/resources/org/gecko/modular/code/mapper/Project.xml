@@ -9,7 +9,7 @@
         <result column="title" property="title" />
         <result column="owner" property="owner" />
         <result column="icon_class" property="iconClass" />
-        <result column="encoded" property="encoded" />
+        <result column="encoding" property="encoding" />
         <result column="description" property="description" />
         <result column="code_package" property="codePackage" />
         <result column="xml_path" property="xmlPath" />
@@ -23,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, title, owner, icon_class, encoded, description, code_package, xml_path, js_path, html_path, db_count, table_count, template_count, member_count
+        id, name, title, owner, icon_class, encoding, description, code_package, xml_path, js_path, html_path, db_count, table_count, template_count, member_count
     </sql>
 
 </mapper>

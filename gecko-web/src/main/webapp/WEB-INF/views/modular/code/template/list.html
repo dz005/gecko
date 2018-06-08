@@ -47,6 +47,8 @@
             striped: true,
             pagination: true,
             mobileResponsive: true,
+            showColumns: true,
+            showRefresh: true,
             iconSize: 'outline',
             toolbar: $toolbar,
             sidePagination: "server",
@@ -59,26 +61,17 @@
             columns: [{
                 checkbox: true
             }, {
-                field: 'tableName',
-                title: "表名"
-            }, {
-                field: 'entityName',
-                title: '类名'
-            }, {
                 field: 'title',
-                title: '功能'
+                title: '标题'
             }, {
-                field: 'supportImport',
-                title: '导入'
-            }, {
-                field: 'supportExport',
-                title: '导出'
-            }, {
-                field: 'supportPagination',
-                title: '分页'
-            }, {
-                field: 'supportLog',
-                title: '日志'
+                field: 'templateType',
+                title: '类型'
+            },{
+                field: 'filePath',
+                title: '文件路径'
+            },{
+                field: 'fileName',
+                title: '文件名'
             }]
         });
         $btnQuery.click(function () {

@@ -23,7 +23,7 @@ public class GenGlobalProviderImpl implements GenGlobalProvider {
         //TODO
         genGlobal.setAuthor("zhi.deng");
         genGlobal.setCodePackage(project.getCodePackage());
-        genGlobal.setEncoded(project.getEncoded());
+        genGlobal.setEncoding(project.getEncoding());
         genGlobal.setHtmlPath(project.getHtmlPath());
         genGlobal.setJsPath(project.getJsPath());
         genGlobal.setXmlPath(project.getXmlPath());

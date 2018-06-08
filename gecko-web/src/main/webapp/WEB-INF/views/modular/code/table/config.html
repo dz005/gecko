@@ -40,6 +40,20 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger">*</span> 字段组：</label>
+                        <div class="col-sm-9">
+                            <div class="checkbox-inline i-checks">
+                                @for(fieldGroupType in fieldGroupTypes){
+                                <label>
+                                    <input name="fieldGroupType" type="radio"  value="${fieldGroupType.name}"
+                                           ${bean.fieldGroupType==fieldGroupType.name?"checked":""}/>
+                                    <span>${fieldGroupType.title}</span>
+                                </label>
+                                @}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label"> 基础功能：</label>
                         <div class="col-sm-9">
                             <div class="checkbox-inline i-checks">

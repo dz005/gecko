@@ -43,7 +43,9 @@ public class GenEntityProviderImpl implements GenEntityProvider {
         if (tableList != null && !tableList.isEmpty()) {
             List<GenEntity> result = new ArrayList<>(tableList.size());
             List<Db> dbList = dbService.selectList(Condition.create().eq(Db.PROJECT_ID, projectId));
-            Map<Long, String> dbQualifierMap = dbList.stream().collect(Collectors.toMap(Db::getId, Db::getDbQualifier));
+            Map<Long, String> dbQualifierMap = dbList.stream()
+                    .filter(db -> db.getDbQualifier() != null && db.getDbQualifier().trim().length() > 0)
+                    .collect(Collectors.toMap(Db::getId, Db::getDbQualifier));
             for (Table table : tableList) {
                 result.add(convertGenEntity(table, dbQualifierMap.get(table.getDbId())));
             }
@@ -57,7 +59,7 @@ public class GenEntityProviderImpl implements GenEntityProvider {
         GenEntity genEntity = new GenEntity();
         genEntity.setDbQualifier(dbQualifier);
         genEntity.setTableName(table.getTableName());
-        genEntity.setName(table.getEntityName());
+        genEntity.setEntityName(table.getEntityName());
         genEntity.setComment(table.getTitle());
         genEntity.setSupportAdd(table.getSupportAdd());
         genEntity.setSupportEdit(table.getSupportEdit());

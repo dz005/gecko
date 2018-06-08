@@ -26,7 +26,7 @@ public class GenGlobal {
     /**
      * 编码
      */
-    private String encoded;
+    private String encoding;
     /**
      * code 包
      */
