@@ -1,0 +1,100 @@
+@layout("/common/container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>项目列表</h5>
+        <div class="ibox-tools">
+            <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <div id="toolbar">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <input name="name" class="form-control" size="14" placeholder="项目名"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-outline btnQuery"><i class="fa fa-search"></i>
+                                </button>
+                                <button class="btn btn-default btn-outline btnAdd"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="table" class="table-no-bordered"></table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    var ctxPath = "${ctxPath}";
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    (function () {
+        var $toolbar = $('#toolbar');
+        var $btnQuery = $('.btnQuery');
+        var $table = $('#table').bootstrapTable({
+            url: ctxPath + "/project/selectPage",
+            //striped: true,
+            showHeader: false,
+            pagination: true,
+            mobileResponsive: true,
+            iconSize: 'outline',
+            toolbar: $toolbar,
+            toolbarAlign: "right",
+            sidePagination: "server",
+            queryParamsType: '',
+            totalField: "total",
+            dataField: "records",
+            queryParams: function (params) {
+                return $.extend(params, $btnQuery.data('queryParam'));
+            },
+            columns: [{
+                field: 'iconClass',
+                title: "图标",
+                width: "80",
+                align: 'center',
+                formatter: function (value, row, index) {
+                    return '<img alt="image" width="40" class="img-circle" src="${ctxPath}/static/img/profile.jpg"/>';
+                },
+                events: {
+                    'click .view': function (e, value, row, index) {
+                        layer.open({
+                            type: 2,
+                            title: '#' + value,
+                            area: ['100%', '100%'],
+                            content: 'view/audit/proxyLog/detail/' + value
+                        });
+                    }
+                }
+            }, {
+                field: 'name',
+                title: '名称',
+                formatter: function (value, row, index) {
+                    return "<b>" + value + "</b><br/>" + row.title;
+                }
+            }, {
+                title: '信息',
+                width: "100",
+                formatter: function (value, row, index) {
+                    return "<i class='fa fa-group'> 20</i>";
+                },
+            }]
+        });
+        $btnQuery.click(function () {
+            var queryParam = {};
+            $toolbar.find('[name]').each(function () {
+                queryParam[$(this).attr('name')] = $(this).val().trim();
+            });
+            $btnQuery.data("queryParam", queryParam);
+            $table.bootstrapTable("selectPage", 1);
+        });
+    })(document, window, jQuery);
+    //]]>
+</script>
+@}

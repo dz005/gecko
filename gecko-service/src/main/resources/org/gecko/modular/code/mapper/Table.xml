@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gecko.modular.code.mapper.TableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.gecko.modular.code.entity.Table">
+        <id column="id" property="id" />
+        <result column="project_id" property="projectId" />
+        <result column="db_id" property="dbId" />
+        <result column="table_name" property="tableName" />
+        <result column="entity_name" property="entityName" />
+        <result column="title" property="title" />
+        <result column="support_import" property="supportImport" />
+        <result column="support_export" property="supportExport" />
+        <result column="support_pagination" property="supportPagination" />
+        <result column="support_log" property="supportLog" />
+        <result column="support_add" property="supportAdd" />
+        <result column="support_edit" property="supportEdit" />
+        <result column="support_detail" property="supportDetail" />
+        <result column="support_list" property="supportList" />
+        <result column="support_delete" property="supportDelete" />
+        <result column="field_group_type" property="fieldGroupType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, project_id, db_id, table_name, entity_name, title, support_import, support_export, support_pagination, support_log, support_add, support_edit, support_detail, support_list, support_delete, field_group_type
+    </sql>
+
+</mapper>

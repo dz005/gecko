@@ -1,0 +1,153 @@
+@layout("/common/container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>表管理</h5>
+        <div class="ibox-tools">
+            <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <div id="toolbar">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-outline btnAdd" title="新增">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button class="btn btn-default btn-outline btnDownload" title="生成">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                                <button class="btn btn-default btn-outline btnDelete" title="删除">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="table"></table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    var ctxPath = "${ctxPath}";
+    var projectId = "${projectId}";
+    var dbMap = new Map();
+    @for (db in dbList) {
+        dbMap.set(${db.id}, "${db.title}");
+    @}
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    (function () {
+
+        var supportMap = new Map();
+        supportMap.set(false, '<i class="fa fa-close text-danger"></i>');
+        supportMap.set(true, '<i class="fa fa-check text-navy"></i>');
+        var $toolbar = $('#toolbar');
+        var $btnQuery = $('.btnQuery');
+        var $table = $('#table').bootstrapTable({
+            url: ctxPath + "/table/selectPage?projectId=" + projectId,
+            pagination: true,
+            mobileResponsive: true,
+            showColumns: true,
+            showRefresh: true,
+            iconSize: 'outline',
+            toolbar: $toolbar,
+            sidePagination: "server",
+            queryParamsType: '',
+            totalField: "total",
+            dataField: "records",
+            queryParams: function (params) {
+                return $.extend(params, $btnQuery.data('queryParam'));
+            },
+            columns: [{
+                checkbox: true
+            }, {
+                visible: false,
+                field: 'dbId',
+                title: "数据库",
+                formatter: function (value, row, index) {
+                    return dbMap.get(value);
+                }
+            }, {
+                field: 'tableName',
+                title: "表名",
+                formatter: function (value, row, index) {
+                    return '<a class="btnConfig">' + value + '</a>';
+                },
+                events: {
+                    'click .btnConfig': function (e, value, row, index) {
+                        layer.open({
+                            type: 2,
+                            title: false,
+                            area: ['100%', '100%'],
+                            scrollbar: false,
+                            shift: 2,
+                            content: ctxPath + "/table/to_config/" + row.id,
+                            cancel: function (index) {
+                                $table.bootstrapTable("refresh");
+                            }
+                        });
+                    }
+                }
+            }, {
+                field: 'entityName',
+                title: '类名'
+            }, {
+                field: 'title',
+                title: '标题'
+            }, {
+                field: 'supportImport',
+                title: '导入',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'supportExport',
+                title: '导出',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'supportPagination',
+                title: '分页',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'supportLog',
+                title: '日志',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }]
+        });
+
+        $btnQuery.click(function () {
+            var queryParam = {};
+            $toolbar.find('[name]').each(function () {
+                queryParam[$(this).attr('name')] = $(this).val().trim();
+            });
+            $btnQuery.data("queryParam", queryParam);
+            $table.bootstrapTable("selectPage", 1);
+        });
+        $(".btnAdd").click(function () {
+            openLayerRight(false, ctxPath + "/table/to_import?projectId=" + projectId);
+        });
+    })(document, window, jQuery);
+    //]]>
+</script>
+@}

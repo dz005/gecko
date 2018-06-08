@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+    <title>OPS - 400错误</title>
+    <meta name="keywords" content="OPS"/>
+    <meta name="description" content="OPS"/>
+
+    <base th:href="${#httpServletRequest.contextPath+'/'}"/>
+
+    <link rel="shortcut icon" href="resource/favicon.ico"/>
+    <link href="resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="resource/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+
+    <link href="resource/css/animate.css" rel="stylesheet"/>
+    <link th:href="@{${urls.getForLookupPath('/resource/css/style.css')}}" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center animated fadeInDown">
+    <h1>400</h1>
+    <h3 class="font-bold">请求出错</h3>
+
+    <div class="error-desc">
+        <span th:text="${#httpServletRequest.getAttribute('exception')}"></span>
+        <span th:text="${#httpServletRequest.getAttribute('message')}"></span>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+</body>
+
+</html>

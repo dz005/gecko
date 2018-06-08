@@ -1,0 +1,95 @@
+@layout("/common/container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>模板列表</h5>
+        <div class="ibox-tools">
+            <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <div id="toolbar">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-outline btnAdd" title="新增">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button class="btn btn-default btn-outline btnEdit" title="编辑">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="btn btn-default btn-outline btnDelete" title="删除">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="table"></table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    var ctxPath = "${ctxPath}";
+    var projectId = "${projectId}";
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    (function () {
+        var $toolbar = $('#toolbar');
+        var $btnQuery = $('.btnQuery');
+        var $table = $('#table').bootstrapTable({
+            url: ctxPath + "/template/selectPage?projectId=" + projectId,
+            striped: true,
+            pagination: true,
+            mobileResponsive: true,
+            iconSize: 'outline',
+            toolbar: $toolbar,
+            sidePagination: "server",
+            queryParamsType: '',
+            totalField: "total",
+            dataField: "records",
+            queryParams: function (params) {
+                return $.extend(params, $btnQuery.data('queryParam'));
+            },
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'tableName',
+                title: "表名"
+            }, {
+                field: 'entityName',
+                title: '类名'
+            }, {
+                field: 'title',
+                title: '功能'
+            }, {
+                field: 'supportImport',
+                title: '导入'
+            }, {
+                field: 'supportExport',
+                title: '导出'
+            }, {
+                field: 'supportPagination',
+                title: '分页'
+            }, {
+                field: 'supportLog',
+                title: '日志'
+            }]
+        });
+        $btnQuery.click(function () {
+            var queryParam = {};
+            $toolbar.find('[name]').each(function () {
+                queryParam[$(this).attr('name')] = $(this).val().trim();
+            });
+            $btnQuery.data("queryParam", queryParam);
+            $table.bootstrapTable("selectPage", 1);
+        });
+    })(document, window, jQuery);
+    //]]>
+</script>
+@}

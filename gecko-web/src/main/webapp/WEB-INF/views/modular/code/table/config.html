@@ -1,0 +1,319 @@
+@layout("/common/container.html"){
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab_table" aria-expanded="false">表信息</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab_fields" aria-expanded="false">字段列表</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab_condition" aria-expanded="false">查询配置</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <!--表信息-->
+        <div id="tab_table" class="tab-pane active">
+            <div class="panel-body">
+                <form id="form" class="form-horizontal m-t" novalidate="novalidate">
+                    <input type="hidden" name="id" value="${bean.id}"/>
+                    <input type="hidden" name="dbId" value="${bean.dbId}"/>
+                    <input type="hidden" name="projectId" value="${bean.projectId}"/>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger">*</span> 表名：</label>
+                        <div class="col-sm-9">
+                            <input name="tableName" class="form-control" value="${bean.tableName}"
+                                   required="required" disabled="disabled"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger">*</span> 类名：</label>
+                        <div class="col-sm-9">
+                            <input name="entityName" class="form-control" value="${bean.entityName}"
+                                   required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"> 名称：</label>
+                        <div class="col-sm-9">
+                            <input name="title" class="form-control" value="${bean.title}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"> 基础功能：</label>
+                        <div class="col-sm-9">
+                            <div class="checkbox-inline i-checks">
+                                <label>
+                                    <input name="supportAdd" class="switch" type="checkbox" ${bean.supportAdd?"checked":""}/>
+                                    <span>新增</span>
+                                </label>
+                                <label>
+                                    <input name="supportEdit" class="switch" type="checkbox" ${bean.supportEdit?"checked":""}/>
+                                    <span>编辑</span>
+                                </label>
+                                <label>
+                                    <input name="supportDetail" class="switch" type="checkbox"
+                                           ${bean.supportDetail?"checked":""}/>
+                                    <span>明细</span>
+                                </label>
+                                <label>
+                                    <input name="supportDelete" class="switch" type="checkbox"
+                                           ${bean.supportDelete?"checked":""}/>
+                                    <span>删除</span>
+                                </label>
+                                <label>
+                                    <input name="supportList" class="switch" type="checkbox" ${bean.supportList?"checked":""}/>
+                                    <span>列表</span>
+                                </label>
+                                <label>
+                                    <input name="supportPagination" class="switch" type="checkbox"
+                                           ${bean.supportPagination?"checked":""}/>
+                                    <span>分页</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"> 扩展功能：</label>
+                        <div class="col-sm-9">
+                            <div class="checkbox-inline i-checks">
+                                <label>
+                                    <input name="supportImport" class="switch" type="checkbox" ${bean.supportImport?"checked":""}/>
+                                    <span>导入</span>
+                                </label>
+                                <label>
+                                    <input name="supportExport" class="switch" type="checkbox" ${bean.supportExport?"checked":""}/>
+                                    <span>导出</span>
+                                </label>
+                                <label>
+                                    <input name="supportLog" class="switch" type="checkbox" ${bean.supportLog?"checked":""}/>
+                                    <span>日志</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2">
+                            <button type="button" class="btn btn-primary btnSaveTable">
+                                <i class="fa fa-save"> 确定</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--字段列表-->
+        <div id="tab_fields" class="tab-pane">
+            <div class="panel-body">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div id="toolbar">
+                            <div class="form-inline" role="form">
+                                <div class="form-group">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default btn-outline btnAdd"
+                                                title="导入">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        <button class="btn btn-default btn-outline btnDelete"
+                                                title="删除">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tab_condition" class="tab-pane">
+            <div class="panel-body">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="${ctxPath}/static/js/plugins/validate/messages_zh.min.js"></script>
+<script type="text/javascript">
+    //<![CDATA[
+    var ctxPath = "${ctxPath}";
+    var tableId = "${bean.id}";
+    var widgetTypeMap = new Map();
+    var dataTypeMap = new Map();
+
+    @for (widgetType in widgetTypes) {
+        widgetTypeMap.set("${widgetType.name}", "${widgetType.title}");
+    @}
+    @for (dataType in dataTypes) {
+        dataTypeMap.set("${dataType.name}", "${dataType.type}");
+    @}
+    //]]>
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    (function () {
+        //表信息
+        $(".i-checks input").iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        var $form = $("#form");
+        $(".btnSaveTable").click(function () {
+            if ($form.valid()) {
+                layer.load();
+                $.post(ctxPath + "/table/update", form2Json($form),
+                    function (data) {
+                        layer.closeAll('loading');
+                        if (data.code == 0) {
+                            layer.msg('保存成功', {icon: 6, time: 2000});
+                        } else {
+                            alertError(data.msg);
+                        }
+                    }
+                );
+            }
+        });
+
+        //字段列表
+        var supportMap = new Map();
+        supportMap.set(false, '<i class="fa fa-close text-danger"></i>');
+        supportMap.set(true, '<i class="fa fa-check text-navy"></i>');
+        var $toolbar = $('#toolbar');
+        var $btnQuery = $('.btnQuery');
+        var $table = $('#table').bootstrapTable({
+            url: ctxPath + "/field/selectList?tableId=" + tableId,
+            mobileResponsive: true,
+            showColumns: true,
+            showRefresh: true,
+            iconSize: 'outline',
+            toolbar: $toolbar,
+            queryParams: function (params) {
+                return $.extend(params, $btnQuery.data('queryParam'));
+            },
+            columns: [{
+                checkbox: true
+            }, {
+                visible: false,
+                field: 'sortNum',
+                title: "排序"
+            }, {
+                field: 'columnName',
+                title: "字段",
+                formatter: function (value, row, index) {
+                    var html = '<a class="btnConfig">' + value + '</a>';
+                    if (row.primaryKey) {
+                        html += ' <i class="fa fa-key text-warning"></i>';
+                    }
+                    return html;
+                },
+                events: {
+                    'click .btnConfig': function (e, value, row, index) {
+                        openLayerRight(false, ctxPath + "/field/to_config/" + row.id);
+                    }
+                }
+            }, {
+                field: 'title',
+                title: '标题'
+            }, {
+                field: 'dataType',
+                title: '类型',
+                formatter: function (value, row, index) {
+                    return dataTypeMap.get(value);
+                }
+            }, {
+                field: 'name',
+                title: '名称'
+            }, {
+                field: 'widgetType',
+                title: '控件',
+                formatter: function (value, row, index) {
+                    return widgetTypeMap.get(value);
+                }
+            }, {
+                field: 'required',
+                title: '非空',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'showList',
+                title: '列表',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'showAdd',
+                title: '新增',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'showEdit',
+                title: '编辑',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                visible: false,
+                field: 'disabledEdit',
+                title: '禁用',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'showDetail',
+                title: '明细',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'supportImport',
+                title: '导入',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }, {
+                field: 'supportExport',
+                title: '导出',
+                align: "center",
+                width: 50,
+                formatter: function (value, row, index) {
+                    return supportMap.get(value);
+                }
+            }]
+        });
+        $btnQuery.click(function () {
+            var queryParam = {};
+            $toolbar.find('[name]').each(function () {
+                queryParam[$(this).attr('name')] = $(this).val().trim();
+            });
+            $btnQuery.data("queryParam", queryParam);
+            $table.bootstrapTable("selectPage", 1);
+        });
+        $(".btnAdd").click(function () {
+            openLayerRight(false, ctxPath + "/table/to_import?projectId=" + projectId);
+        });
+    })(document, window, jQuery);
+    //]]>
+</script>
+@}
