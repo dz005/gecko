@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhi.deng
- * @since 2018-06-08
+ * @since 2018-06-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -58,11 +58,6 @@ public class Template implements Serializable {
     @TableField("file_path")
     private String filePath;
     /**
-     * 文件类型
-     */
-    @TableField("file_type")
-    private String fileType;
-    /**
      * 模板内容
      */
     private String content;
@@ -83,8 +78,6 @@ public class Template implements Serializable {
     public static final String FILE_NAME = "file_name";
 
     public static final String FILE_PATH = "file_path";
-
-    public static final String FILE_TYPE = "file_type";
 
     public static final String CONTENT = "content";
 

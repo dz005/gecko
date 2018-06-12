@@ -1,4 +1,4 @@
-@layout("/common/container.html"){
+@layout("/common/list_container.html"){
 <div class="ibox float-e-margins">
     <div class="ibox-title">
         <h5>数据库列表</h5>
@@ -16,12 +16,6 @@
                             <div class="btn-group">
                                 <button class="btn btn-default btn-outline btnAdd" title="新增">
                                     <i class="fa fa-plus"></i>
-                                </button>
-                                <button class="btn btn-default btn-outline btnEdit" title="编辑">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button class="btn btn-default btn-outline btnDelete" title="删除">
-                                    <i class="fa fa-trash"></i>
                                 </button>
                             </div>
                         </div>
@@ -47,6 +41,8 @@
             striped: true,
             pagination: true,
             mobileResponsive: true,
+            showColumns: true,
+            showRefresh: true,
             iconSize: 'outline',
             toolbar: $toolbar,
             sidePagination: "server",
@@ -57,20 +53,56 @@
                 return $.extend(params, $btnQuery.data('queryParam'));
             },
             columns: [{
-                checkbox: true
+                field: 'title',
+                title: "标题"
             }, {
                 field: 'type',
-                title: '数据库类型'
-            }, {
-                field: 'title',
-                title: "名称"
+                title: '类型'
             }, {
                 field: 'url',
-                title: '数据库地址'
+                title: 'URL'
             }, {
                 field: 'username',
-                title: '数据库账户'
+                title: '账户'
+            }, {
+                title: '操作',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var status = row.status;
+                    var array = [];
+                    array.push('<div class="btn-group">');
+                    array.push('<button class="btn btn-sm btn-outline btn-default btnEdit" title="编辑"><i class="fa fa-edit"></i></button>');
+                    array.push('<button class="btn btn-sm btn-outline btn-danger btnDelete" title="删除"><i class="fa fa-trash"></i></button>');
+                    array.push('</div>');
+                    return array.join('');
+                },
+                events: {
+                    'click .btnEdit': function (e, value, row, index) {
+                        openLayerFull('<i class="fa fa-edit"></i> 编辑', ctxPath + '/db/to_update/' + row.id);
+                    },
+                    'click .btnDelete': function (e, value, row, index) {
+                        layer.confirm('您确定要删除该数据库吗？', {
+                            icon: 3,
+                            shade: false //不显示遮罩
+                        }, function (index) {
+                            layer.close(index);
+                            layer.load();
+                            $.post(ctxPath + "/db/delete/" + row.id, function (data) {
+                                layer.closeAll('loading');
+                                if (data.code == 0) {
+                                    layer.msg('删除成功', {icon: 6, time: 2000});
+                                    $table.bootstrapTable("refresh");
+                                } else {
+                                    alertError(data.msg);
+                                }
+                            });
+                        });
+                    }
+                }
             }]
+        });
+        $(".btnAdd").click(function () {
+            openLayerFull('<i class="fa fa-plus"></i> 新增', ctxPath + "/db/to_add?projectId=" + projectId);
         });
         $btnQuery.click(function () {
             var queryParam = {};

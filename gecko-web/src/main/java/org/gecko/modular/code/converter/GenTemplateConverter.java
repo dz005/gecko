@@ -20,7 +20,6 @@ public class GenTemplateConverter implements Converter<Template, GenTemplate> {
         target.setType(TemplateType.valueOf(source.getTemplateType()));
         target.setFileName(source.getFileName());
         target.setFilePath(source.getFilePath());
-        target.setFileType(source.getFileType());
         target.setContent(source.getContent());
         return target;
     }

@@ -1,0 +1,130 @@
+@layout("/common/form_container.html"){
+<link href="${ctxPath}/static/js/plugins/codemirror/lib/codemirror.css" rel="stylesheet"/>
+<link href="${ctxPath}/static/js/plugins/codemirror/addon/display/fullscreen.css" rel="stylesheet"/>
+<link href="${ctxPath}/static/js/plugins/codemirror/addon/scroll/simplescrollbars.css" rel="stylesheet"/>
+
+<form id="form" class="form-horizontal m-t" novalidate="novalidate">
+    <input type="hidden" name="projectId" value="${projectId}"/>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 标题：</label>
+            <div class="col-sm-8">
+                <input name="title" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 模板类型：</label>
+            <div class="col-sm-8">
+                <select name="templateType" class="form-control" required="required">
+                    <option value="">请选择模板类型</option>
+                    @for(templateType in templateTypes){
+                    <option value="${templateType.name}">
+                        ${templateType.title}
+                    </option>
+                    @}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 文件路径：</label>
+            <div class="col-sm-8">
+                <input name="filePath" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 文件名：</label>
+            <div class="col-sm-8">
+                <input id="fileName" name="fileName" class="form-control" required="required"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="text-danger">*</span> 模板内容：</label>
+            <div class="col-sm-9">
+                     <textarea id="content" name="content" class="form-control"
+                               required="required"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-9">
+                <button type="button" class="btn btn-primary btnSave">
+                    <i class="fa fa-save"> 保存</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="${ctxPath}/static/js/plugins/codemirror/lib/codemirror.js"></script>
+<script src="${ctxPath}/static/js/plugins/codemirror/addon/display/fullscreen.js"></script>
+<script src="${ctxPath}/static/js/plugins/codemirror/addon/scroll/simplescrollbars.js"></script>
+<script src="${ctxPath}/static/js/plugins/codemirror/addon/mode/loadmode.js"></script>
+<script src="${ctxPath}/static/js/plugins/codemirror/mode/meta.js"></script>
+<script type="text/javascript">
+    //<![CDATA[
+    var ctxPath = "${ctxPath}";
+    //]]>
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    (function () {
+        CodeMirror.modeURL = ctxPath + "/static/js/plugins/codemirror/mode/%N/%N.js";
+
+        var $editor = CodeMirror.fromTextArea(document.getElementById("content"), {
+            lineNumbers: true,
+            matchBrackets: true,
+            styleActiveLine: true,
+            scrollbarStyle: "simple",
+            extraKeys: {
+                "F11": function (cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                },
+                "Esc": function (cm) {
+                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                }
+            }
+        });
+
+        function setModeByFileName(fileName) {
+            var info = CodeMirror.findModeByFileName(fileName);
+            if (info) {
+                $editor.setOption("mode", info.mime);
+                CodeMirror.autoLoadMode($editor, info.mode);
+            } else {
+                $editor.setOption("mode", null);
+            }
+        }
+
+        setModeByFileName($("#fileName").val());
+        $("#fileName").change(function () {
+            setModeByFileName($(this).val());
+        });
+        var $form = $("#form");
+        $(".btnSave").click(function () {
+            $("#content").val($editor.getValue());
+            if ($form.valid()) {
+                layer.load();
+                $.post(ctxPath + "/template/add", form2Json($form),
+                    function (data) {
+                        layer.closeAll('loading');
+                        if (data.code == 0) {
+                            var $table = parent.$("#table");
+                            if ($table) {
+                                $table.bootstrapTable("refresh");
+                            }
+                            layer.msg('保存成功', {icon: 6, time: 2000});
+                        } else {
+                            alertError(data.msg);
+                        }
+                    }
+                );
+            }
+        });
+    })(document, window, jQuery);
+    //]]>
+</script>
+@}

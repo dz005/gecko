@@ -3,6 +3,7 @@ package org.gecko.modular.code.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.gecko.core.base.JsonResponse;
+import org.gecko.core.gen.enums.Extension;
 import org.gecko.core.gen.modal.GenEntity;
 import org.gecko.core.gen.modal.GenGlobal;
 import org.gecko.core.gen.modal.GenTemplate;
@@ -66,14 +67,17 @@ public class GenController {
     private String getDirPath(GenTemplate template, GenGlobal global) {
         String fileName = template.getFileName();
         String globalPath = null;
-        if (fileName.endsWith(".js")) {
-            globalPath = global.getJsPath();
-        } else if (fileName.endsWith(".html")) {
-            globalPath = global.getHtmlPath();
-        } else if (fileName.endsWith(".xml")) {
-            globalPath = global.getXmlPath();
-        } else if (fileName.endsWith(".java")) {
-            globalPath = global.getCodePackage();
+        if (StringUtils.hasText(fileName)) {
+            String tmp = fileName.toLowerCase();
+            if (tmp.endsWith(Extension.JS)) {
+                globalPath = global.getJsPath();
+            } else if (tmp.endsWith(Extension.HTML)) {
+                globalPath = global.getHtmlPath();
+            } else if (tmp.endsWith(Extension.XML)) {
+                globalPath = global.getXmlPath();
+            } else if (tmp.endsWith(Extension.JAVA)) {
+                globalPath = "java" + File.separator + global.getCodePackage();
+            }
         }
         globalPath = StringUtils.hasText(globalPath) ? globalPath.replaceAll("\\.", "\\/") : "";
         String templatePath = StringUtils.hasText(template.getFilePath()) ?
@@ -102,9 +106,5 @@ public class GenController {
             String encoding = StringUtils.hasText(global.getEncoding()) ? global.getEncoding() : "UTF-8";
             FileUtils.writeStringToFile(file, content, encoding);
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println("ab" + File.separator + "dd");
     }
 }

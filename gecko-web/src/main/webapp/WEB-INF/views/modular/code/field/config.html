@@ -1,251 +1,269 @@
-@layout("/common/container.html"){
-<div class="tabs-container">
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a data-toggle="tab" href="#tab_field" aria-expanded="false">字段信息</a>
-        </li>
-        <li>
-            <a data-toggle="tab" href="#tab_rules" aria-expanded="false">规则列表</a>
-        </li>
-        <li>
-            <a data-toggle="tab" href="#tab_options" aria-expanded="false">选项列表</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <!--字段信息-->
-        <div id="tab_field" class="tab-pane active">
-            <div class="panel-body">
-                <form id="form" class="form-horizontal m-t" novalidate="novalidate">
-                    <input type="hidden" name="id" value="${bean.id}"/>
-                    <input type="hidden" name="tableId" value="${bean.tableId}"/>
+@layout("/common/body.html"){
+<style type="text/css">
+    .floatToolBar {
+        position: fixed;
+        right: 40px;
+        bottom: 40px;
+        z-index: 100;
+    }
 
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 字段名</label>
-                            <div class="col-sm-8">
-                                <input name="columnName" class="form-control" value="${bean.columnName}"
-                                       required="required" disabled="disabled"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 字段类型</label>
-                            <div class="col-sm-8">
-                                <input name="columnType" class="form-control" value="${bean.columnType}"
-                                       disabled="disabled"/>
-                            </div>
-                        </div>
-                    </div>
+    .floatToolBar a {
+        height: 38px;
+        width: 38px;
+        display: block;
+        background: #2f4050;
+        padding: 9px 8px;
+        text-align: center;
+        color: #fff;
+        border-radius: 50%;
+        opacity: .5;
+    }
+</style>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab_field" aria-expanded="false">字段信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab_rules" aria-expanded="false">规则列表</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab_options" aria-expanded="false">选项列表</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <!--字段信息-->
+            <div id="tab_field" class="tab-pane active">
+                <div class="panel-body">
+                    <form id="form" class="form-horizontal m-t" novalidate="novalidate">
+                        <input type="hidden" name="id" value="${bean.id}"/>
+                        <input type="hidden" name="tableId" value="${bean.tableId}"/>
 
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 名称</label>
-                            <div class="col-sm-8">
-                                <input name="name" class="form-control" value="${bean.name}"
-                                       required="required"/>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 字段名：</label>
+                                <div class="col-sm-8">
+                                    <input name="columnName" class="form-control" value="${bean.columnName}"
+                                           required="required" disabled="disabled"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 标题</label>
-                            <div class="col-sm-8">
-                                <input name="title" class="form-control" value="${bean.title}"
-                                       required="required"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 类型</label>
-                            <div class="col-sm-8">
-                                <select name="dataType" class="form-control" required="required">
-                                    <option value="">请选择数据类型</option>
-                                    @for(dataType in dataTypes){
-                                    <option value="${dataType.name}" ${bean.dataType==dataType.name?"selected":""}>
-                                        ${dataType.type}
-                                    </option>
-                                    @}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 控件</label>
-                            <div class="col-sm-8">
-                                <select name="widgetType" class="form-control" required="required">
-                                    <option value="">请选择控件</option>
-                                    @for(widgetType in widgetTypes){
-                                    <option value="${widgetType.name}"
-                                            ${bean.widgetType==widgetType.name?"selected":""}>
-                                        ${widgetType.name} - ${widgetType.title}
-                                    </option>
-                                    @}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 排序</label>
-                            <div class="col-sm-8">
-                                <input type="number" name="sortNum" class="form-control" value="${bean.sortNum}"
-                                       required="required"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label">字典</label>
-                            <div class="col-sm-8">
-                                <input name="dictName" class="form-control" value="${bean.dictName}"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label">默认值</label>
-                            <div class="col-sm-8">
-                                <input name="defaultValue" class="form-control" value="${bean.defaultValue}"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label">占位符</label>
-                            <div class="col-sm-8">
-                                <input name="placeholder" class="form-control" value="${bean.placeholder}"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label">单位</label>
-                            <div class="col-sm-8">
-                                <input name="unit" class="form-control" value="${bean.unit}"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="col-sm-4 control-label">帮助提示</label>
-                            <div class="col-sm-8">
-                                <input name="helpTip" class="form-control" value="${bean.helpTip}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label class="col-sm-2 control-label">基础属性</label>
-                            <div class="col-sm-9">
-                                <div class="checkbox-inline i-checks">
-                                    <label>
-                                        <input name="primaryKey" class="switch" disabled="disabled" type="checkbox"
-                                               ${bean.primaryKey?"checked":""}/>
-                                        <span>主键</span>
-                                    </label>
-                                    <label>
-                                        <input name="required" class="switch" type="checkbox" ${bean.required?"checked":""}/>
-                                        <span>非空</span>
-                                    </label>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 字段类型：</label>
+                                <div class="col-sm-8">
+                                    <input name="columnType" class="form-control" value="${bean.columnType}"
+                                           disabled="disabled"/>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label class="col-sm-2 control-label">显示配置</label>
-                            <div class="col-sm-9">
-                                <div class="checkbox-inline i-checks">
-                                    <label>
-                                        <input name="showAdd" class="switch" type="checkbox" ${bean.showAdd?"checked":""}/>
-                                        <span>新增显示</span>
-                                    </label>
-                                    <label>
-                                        <input name="showEdit" class="switch" type="checkbox" ${bean.showEdit?"checked":""}/>
-                                        <span>编辑显示</span>
-                                    </label>
-                                    <label>
-                                        <input name="disabledEdit" class="switch" type="checkbox" ${bean.disabledEdit?"checked":""}/>
-                                        <span>编辑禁用</span>
-                                    </label>
-                                    <label>
-                                        <input name="showDetail" class="switch" type="checkbox" ${bean.showDetail?"checked":""}/>
-                                        <span>明细显示</span>
-                                    </label>
-                                    <label>
-                                        <input name="showList" class="switch" type="checkbox" ${bean.showList?"checked":""}/>
-                                        <span>列表显示</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label class="col-sm-2 control-label">扩展功能</label>
-                            <div class="col-sm-9">
-                                <div class="checkbox-inline i-checks">
-                                    <label>
-                                        <input name="supportImport" class="switch" class="switch" type="checkbox"
-                                               ${bean.supportImport?"checked":""}/>
-                                        <span>支持导入</span>
-                                    </label>
-                                    <label>
-                                        <input name="supportExport" class="switch" class="switch" type="checkbox"
-                                               ${bean.supportExport?"checked":""}/>
-                                        <span>支持导出</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <div class="col-sm-offset-2">
-                                <button type="button" class="btn btn-primary btnSaveField">
-                                    <i class="fa fa-save"> 确定</i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <!--规则列表-->
-        <div id="tab_rules" class="tab-pane">
-            <div class="panel-body">
-                <div class="row row-lg">
-                    <div class="col-sm-12">
-                        <div id="toolbar">
-                            <div class="form-inline" role="form">
-                                <div class="form-group">
-                                    <div class="btn-group">
-                                        <button class="btn btn-default btn-outline btnAdd"
-                                                title="导入">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                        <button class="btn btn-default btn-outline btnDelete"
-                                                title="删除">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 名称：</label>
+                                <div class="col-sm-8">
+                                    <input name="name" class="form-control" value="${bean.name}"
+                                           required="required"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 标题：</label>
+                                <div class="col-sm-8">
+                                    <input name="title" class="form-control" value="${bean.title}"
+                                           required="required"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 类型：</label>
+                                <div class="col-sm-8">
+                                    <select name="dataType" class="form-control" required="required">
+                                        <option value="">请选择数据类型</option>
+                                        @for(dataType in dataTypes){
+                                        <option value="${dataType.name}" ${bean.dataType==dataType.name?"selected":""}>
+                                            ${dataType.type}
+                                        </option>
+                                        @}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 控件：</label>
+                                <div class="col-sm-8">
+                                    <select name="widgetType" class="form-control" required="required">
+                                        <option value="">请选择控件</option>
+                                        @for(widgetType in widgetTypes){
+                                        <option value="${widgetType.name}"
+                                                ${bean.widgetType==widgetType.name?"selected":""}>
+                                            ${widgetType.name} - ${widgetType.title}
+                                        </option>
+                                        @}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label"><span class="text-danger">*</span> 排序：</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="sortNum" class="form-control" value="${bean.sortNum}"
+                                           required="required"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label">字典：</label>
+                                <div class="col-sm-8">
+                                    <input name="dictName" class="form-control" value="${bean.dictName}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label">默认值：</label>
+                                <div class="col-sm-8">
+                                    <input name="defaultValue" class="form-control" value="${bean.defaultValue}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label">占位符：</label>
+                                <div class="col-sm-8">
+                                    <input name="placeholder" class="form-control" value="${bean.placeholder}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label">单位：</label>
+                                <div class="col-sm-8">
+                                    <input name="unit" class="form-control" value="${bean.unit}"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-4 control-label">帮助提示：</label>
+                                <div class="col-sm-8">
+                                    <input name="helpTip" class="form-control" value="${bean.helpTip}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">基础属性：</label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox-inline i-checks">
+                                        <label>
+                                            <input name="primaryKey" class="switch" disabled="disabled" type="checkbox"
+                                                   ${bean.primaryKey?"checked":""}/>
+                                            <span>主键</span>
+                                        </label>
+                                        <label>
+                                            <input name="required" class="switch" type="checkbox" ${bean.required?"checked":""}/>
+                                            <span>非空</span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <table id="table"></table>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">显示配置：</label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox-inline i-checks">
+                                        <label>
+                                            <input name="showAdd" class="switch" type="checkbox" ${bean.showAdd?"checked":""}/>
+                                            <span>新增显示</span>
+                                        </label>
+                                        <label>
+                                            <input name="showEdit" class="switch" type="checkbox" ${bean.showEdit?"checked":""}/>
+                                            <span>编辑显示</span>
+                                        </label>
+                                        <label>
+                                            <input name="disabledEdit" class="switch" type="checkbox"
+                                                   ${bean.disabledEdit?"checked":""}/>
+                                            <span>编辑禁用</span>
+                                        </label>
+                                        <label>
+                                            <input name="showDetail" class="switch" type="checkbox" ${bean.showDetail?"checked":""}/>
+                                            <span>明细显示</span>
+                                        </label>
+                                        <label>
+                                            <input name="showList" class="switch" type="checkbox" ${bean.showList?"checked":""}/>
+                                            <span>列表显示</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">扩展功能：</label>
+                                <div class="col-sm-9">
+                                    <div class="checkbox-inline i-checks">
+                                        <label>
+                                            <input name="supportImport" class="switch" class="switch" type="checkbox"
+                                                   ${bean.supportImport?"checked":""}/>
+                                            <span>支持导入</span>
+                                        </label>
+                                        <label>
+                                            <input name="supportExport" class="switch" class="switch" type="checkbox"
+                                                   ${bean.supportExport?"checked":""}/>
+                                            <span>支持导出</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--规则列表-->
+            <div id="tab_rules" class="tab-pane">
+                <div class="panel-body">
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <div id="toolbar">
+                                <div class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <div class="btn-group">
+                                            <button class="btn btn-default btn-outline btnAdd"
+                                                    title="导入">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-default btn-outline btnDelete"
+                                                    title="删除">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="table"></table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!--选项列表-->
-        <div id="tab_options" class="tab-pane">
-            <div class="panel-body">
-                <div class="row row-lg">
-                    <div class="col-sm-12">
+            <!--选项列表-->
+            <div id="tab_options" class="tab-pane">
+                <div class="panel-body">
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
+<div class="floatToolBar"><a class="animated bounceInUp btnSave" title="保存"><i
+        class="fa fa-save"></i></a></div>
+</body>
 <script type="text/javascript">
     var ctxPath = "${ctxPath}";
     var tableId = "${bean.id}";
@@ -260,7 +278,7 @@
             radioClass: 'iradio_square-green',
         });
         var $form = $("#form");
-        $(".btnSaveField").click(function () {
+        $(".btnSave").click(function () {
             if ($form.valid()) {
                 layer.load();
                 $.post(ctxPath + "/field/update", form2Json($form),

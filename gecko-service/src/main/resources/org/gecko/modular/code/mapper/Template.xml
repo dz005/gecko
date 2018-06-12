@@ -10,14 +10,13 @@
         <result column="template_type" property="templateType" />
         <result column="file_name" property="fileName" />
         <result column="file_path" property="filePath" />
-        <result column="file_type" property="fileType" />
         <result column="content" property="content" />
         <result column="activated" property="activated" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, project_id, title, template_type, file_name, file_path, file_type, content, activated
+        id, project_id, title, template_type, file_name, file_path, content, activated
     </sql>
 
 </mapper>

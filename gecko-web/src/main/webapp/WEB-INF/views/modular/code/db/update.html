@@ -1,0 +1,112 @@
+@layout("/common/form_container.html"){
+<form id="form" class="form-horizontal m-t" novalidate="novalidate">
+    <input type="hidden" name="id" value="${bean.id}"/>
+    <input type="hidden" name="projectId" value="${bean.projectId}"/>
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="text-danger">*</span> URL：</label>
+            <div class="col-sm-9">
+                <input name="url" class="form-control" value="${bean.url}"
+                       required="required"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 账号：</label>
+            <div class="col-sm-8">
+                <input name="username" class="form-control" value="${bean.username}"
+                       required="required"/>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 密码：</label>
+            <div class="col-sm-8">
+                <input type="password" name="password" class="form-control" value="${bean.password}"
+                       required="required"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 标题：</label>
+            <div class="col-sm-8">
+                <input name="title" class="form-control" value="${bean.title}"
+                       required="required"/>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 类型：</label>
+            <div class="col-sm-8">
+                <select name="type" class="form-control" required="required">
+                    <option value="">请选择类型</option>
+                    @for(dbType in dbTypes){
+                    <option value="${dbType.name}"
+                            ${bean.type==dbType.name?"selected":""}>
+                        ${dbType.name}
+                    </option>
+                    @}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">表前缀：</label>
+            <div class="col-sm-8">
+                <input name="tablePrefix" class="form-control" value="${bean.tablePrefix}"/>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-4 control-label">标识：</label>
+            <div class="col-sm-8">
+                <input name="dbQualifier" class="form-control" value="${bean.dbQualifier}"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-9">
+                <button type="button" class="btn btn-primary btnSave">
+                    <i class="fa fa-save"> 保存</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="${ctxPath}/static/js/plugins/prettyPassword/pretty.password.js"></script>
+<script type="text/javascript">
+    //<![CDATA[
+    var ctxPath = "${ctxPath}";
+    //]]>
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    (function () {
+        var index = parent.layer.getFrameIndex(window.name);
+        $(":password").prettyPassword();
+        var $form = $("#form");
+        $(".btnSave").click(function () {
+            if ($form.valid()) {
+                layer.load();
+                $.post(ctxPath + "/db/update", form2Json($form),
+                    function (data) {
+                        layer.closeAll('loading');
+                        if (data.code == 0) {
+                            var $table = parent.$("#table");
+                            if ($table) {
+                                $table.bootstrapTable("refresh");
+                            }
+                            parent.layer.msg('保存成功', {icon: 6, time: 2000});
+                            parent.layer.close(index);
+                        } else {
+                            alertError(data.msg);
+                        }
+                    }
+                );
+            }
+        });
+    })(document, window, jQuery);
+    //]]>
+</script>
+@}

@@ -339,6 +339,15 @@ Output:
         &amp;lt;p&amp;gt;For example.&amp;lt;/p&amp;gt;
     &amp;lt;/blockquote&amp;gt;
     &lt;/code&gt;&lt;/pre&gt;
+
+## Fenced code blocks (and syntax highlighting)
+
+```javascript
+for (var i = 0; i < items.length; i++) {
+    console.log(items[i], i); // log them
+}
+```
+
 </textarea></form>
 
     <script>
@@ -350,7 +359,50 @@ Output:
       });
     </script>
 
-    <p>Optionally depends on the XML mode for properly highlighted inline XML blocks.</p>
+    <p>If you also want support <code>strikethrough</code>, <code>emoji</code> and few other goodies, check out <a href="../gfm/index.html">Github-Flavored Markdown mode</a>.</p>
+
+    <p>Optionally depends on other modes for properly highlighted code blocks,
+      and XML mode for properly highlighted inline XML blocks.</p>
+
+    <p>Markdown mode supports these options:</p>
+    <ul>
+      <li>
+        <d1>
+          <dt><code>highlightFormatting: boolean</code></dt>
+          <dd>Whether to separately highlight markdown meta characterts (<code>*[]()</code>etc.) (default: <code>false</code>).</dd>
+        </d1>
+      </li>
+      <li>
+        <d1>
+          <dt><code>maxBlockquoteDepth: boolean</code></dt>
+          <dd>Maximum allowed blockquote nesting (default: <code>0</code> - infinite nesting).</dd>
+        </d1>
+      </li>
+      <li>
+        <d1>
+          <dt><code>xml: boolean</code></dt>
+          <dd>Whether to highlight inline XML (default: <code>true</code>).</dd>
+        </d1>
+      </li>
+      <li>
+        <d1>
+          <dt><code>fencedCodeBlockHighlighting: boolean</code></dt>
+          <dd>Whether to syntax-highlight fenced code blocks, if given mode is included (default: <code>true</code>).</dd>
+        </d1>
+      </li>
+      <li>
+        <d1>
+          <dt><code>tokenTypeOverrides: Object</code></dt>
+          <dd>When you want ot override default token type names (e.g. <code>{code: "code"}</code>).</dd>
+        </d1>
+      </li>
+      <li>
+        <d1>
+          <dt><code>allowAtxHeaderWithoutSpace: boolean</code></dt>
+          <dd>Allow lazy headers without whitespace between hashtag and text (default: <code>false</code>).</dd>
+        </d1>
+      </li>
+    </ul>
 
     <p><strong>MIME types defined:</strong> <code>text/x-markdown</code>.</p>
 

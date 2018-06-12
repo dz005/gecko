@@ -1,4 +1,4 @@
-@layout("/common/container.html"){
+@layout("/common/list_container.html"){
 <div class="ibox float-e-margins">
     <div class="ibox-title">
         <h5>模板列表</h5>
@@ -17,12 +17,6 @@
                                 <button class="btn btn-default btn-outline btnAdd" title="新增">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button class="btn btn-default btn-outline btnEdit" title="编辑">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button class="btn btn-default btn-outline btnDelete" title="删除">
-                                    <i class="fa fa-trash"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -40,6 +34,9 @@
 <script type="text/javascript">
     //<![CDATA[
     (function () {
+        var activatedMap = new Map();
+        activatedMap.set(false, "<span class='label label-warning'>未启用</span>");
+        activatedMap.set(true, "<span class='label label-primary'>已启用</span>");
         var $toolbar = $('#toolbar');
         var $btnQuery = $('.btnQuery');
         var $table = $('#table').bootstrapTable({
@@ -59,20 +56,67 @@
                 return $.extend(params, $btnQuery.data('queryParam'));
             },
             columns: [{
-                checkbox: true
-            }, {
                 field: 'title',
                 title: '标题'
             }, {
                 field: 'templateType',
-                title: '类型'
-            },{
+                title: '模板类型'
+            }, {
                 field: 'filePath',
                 title: '文件路径'
-            },{
+            }, {
                 field: 'fileName',
                 title: '文件名'
+            }, {
+                field: 'activated',
+                title: '状态',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    return activatedMap.get(value);
+                }
+            }, {
+                title: '操作',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var status = row.status;
+                    var array = [];
+                    array.push('<div class="btn-group">');
+                    array.push('<button class="btn btn-sm btn-outline btn-default btnEdit" title="编辑"><i class="fa fa-edit"></i></button>');
+                    array.push('<button class="btn btn-sm btn-outline btn-default btnToggle title="启用"><i class="fa fa-toggle-on"></i></button>');
+                    array.push('<button class="btn btn-sm btn-outline btn-danger btnDelete" title="删除"><i class="fa fa-trash"></i></button>');
+                    array.push('</div>');
+                    return array.join('');
+                },
+                events: {
+                    'click .btnToggle': function (e, value, row, index) {
+                        //openLayerFull('<i class="fa fa-toggle-on"></i> 启用', ctxPath + '/template/to_update/' + row.id);
+                    },
+                    'click .btnEdit': function (e, value, row, index) {
+                        openLayerFull('<i class="fa fa-edit"></i> 编辑', ctxPath + '/template/to_update/' + row.id);
+                    },
+                    'click .btnDelete': function (e, value, row, index) {
+                        layer.confirm('您确定要删除该模板吗？', {
+                            icon: 3,
+                            shade: false //不显示遮罩
+                        }, function (index) {
+                            layer.close(index);
+                            layer.load();
+                            $.post(ctxPath + "/template/delete/" + row.id, function (data) {
+                                layer.closeAll('loading');
+                                if (data.code == 0) {
+                                    layer.msg('删除成功', {icon: 6, time: 2000});
+                                    $table.bootstrapTable("refresh");
+                                } else {
+                                    alertError(data.msg);
+                                }
+                            });
+                        });
+                    }
+                }
             }]
+        });
+        $(".btnAdd").click(function () {
+            openLayerFull('<i class="fa fa-plus"></i> 新增', ctxPath + '/template/to_add?projectId=' + projectId);
         });
         $btnQuery.click(function () {
             var queryParam = {};

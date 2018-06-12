@@ -1,4 +1,4 @@
-@layout("/common/container.html"){
+@layout("/common/list_container.html"){
 <div class="tabs-container">
     <ul class="nav nav-tabs">
         <li class="active">
@@ -19,95 +19,103 @@
                     <input type="hidden" name="id" value="${bean.id}"/>
                     <input type="hidden" name="dbId" value="${bean.dbId}"/>
                     <input type="hidden" name="projectId" value="${bean.projectId}"/>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><span class="text-danger">*</span> 表名：</label>
-                        <div class="col-sm-9">
-                            <input name="tableName" class="form-control" value="${bean.tableName}"
-                                   required="required" disabled="disabled"/>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 表名：</label>
+                            <div class="col-sm-8">
+                                <input name="tableName" class="form-control" value="${bean.tableName}"
+                                       required="required" disabled="disabled"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 类名：</label>
+                            <div class="col-sm-8">
+                                <input name="entityName" class="form-control" value="${bean.entityName}"
+                                       required="required"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><span class="text-danger">*</span> 类名：</label>
-                        <div class="col-sm-9">
-                            <input name="entityName" class="form-control" value="${bean.entityName}"
-                                   required="required"/>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-4 control-label"><span class="text-danger">*</span> 字段分组：</label>
+                            <div class="col-sm-8">
+                                <select name="fieldGroupType" class="form-control" required="required">
+                                    <option value="">请字段分组类型</option>
+                                    @for(fieldGroupType in fieldGroupTypes){
+                                    <option value="${fieldGroupType.name}"
+                                            ${bean.fieldGroupType==fieldGroupType.name?"selected":""}>
+                                        ${fieldGroupType.name} - ${fieldGroupType.title}
+                                    </option>
+                                    @}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-4 control-label"> 名称：</label>
+                            <div class="col-sm-8">
+                                <input name="title" class="form-control" value="${bean.title}"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"> 名称：</label>
-                        <div class="col-sm-9">
-                            <input name="title" class="form-control" value="${bean.title}"/>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"> 基础功能：</label>
+                            <div class="col-sm-9">
+                                <div class="checkbox-inline i-checks">
+                                    <label>
+                                        <input name="supportAdd" class="switch" type="checkbox" ${bean.supportAdd?"checked":""}/>
+                                        <span>新增</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportEdit" class="switch" type="checkbox" ${bean.supportEdit?"checked":""}/>
+                                        <span>编辑</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportDetail" class="switch" type="checkbox"
+                                               ${bean.supportDetail?"checked":""}/>
+                                        <span>明细</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportDelete" class="switch" type="checkbox"
+                                               ${bean.supportDelete?"checked":""}/>
+                                        <span>删除</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportList" class="switch" type="checkbox" ${bean.supportList?"checked":""}/>
+                                        <span>列表</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportPagination" class="switch" type="checkbox"
+                                               ${bean.supportPagination?"checked":""}/>
+                                        <span>分页</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><span class="text-danger">*</span> 字段组：</label>
-                        <div class="col-sm-9">
-                            <div class="checkbox-inline i-checks">
-                                @for(fieldGroupType in fieldGroupTypes){
-                                <label>
-                                    <input name="fieldGroupType" type="radio"  value="${fieldGroupType.name}"
-                                           ${bean.fieldGroupType==fieldGroupType.name?"checked":""}/>
-                                    <span>${fieldGroupType.title}</span>
-                                </label>
-                                @}
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"> 扩展功能：</label>
+                            <div class="col-sm-9">
+                                <div class="checkbox-inline i-checks">
+                                    <label>
+                                        <input name="supportImport" class="switch" type="checkbox" ${bean.supportImport?"checked":""}/>
+                                        <span>导入</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportExport" class="switch" type="checkbox" ${bean.supportExport?"checked":""}/>
+                                        <span>导出</span>
+                                    </label>
+                                    <label>
+                                        <input name="supportLog" class="switch" type="checkbox" ${bean.supportLog?"checked":""}/>
+                                        <span>日志</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"> 基础功能：</label>
-                        <div class="col-sm-9">
-                            <div class="checkbox-inline i-checks">
-                                <label>
-                                    <input name="supportAdd" class="switch" type="checkbox" ${bean.supportAdd?"checked":""}/>
-                                    <span>新增</span>
-                                </label>
-                                <label>
-                                    <input name="supportEdit" class="switch" type="checkbox" ${bean.supportEdit?"checked":""}/>
-                                    <span>编辑</span>
-                                </label>
-                                <label>
-                                    <input name="supportDetail" class="switch" type="checkbox"
-                                           ${bean.supportDetail?"checked":""}/>
-                                    <span>明细</span>
-                                </label>
-                                <label>
-                                    <input name="supportDelete" class="switch" type="checkbox"
-                                           ${bean.supportDelete?"checked":""}/>
-                                    <span>删除</span>
-                                </label>
-                                <label>
-                                    <input name="supportList" class="switch" type="checkbox" ${bean.supportList?"checked":""}/>
-                                    <span>列表</span>
-                                </label>
-                                <label>
-                                    <input name="supportPagination" class="switch" type="checkbox"
-                                           ${bean.supportPagination?"checked":""}/>
-                                    <span>分页</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"> 扩展功能：</label>
-                        <div class="col-sm-9">
-                            <div class="checkbox-inline i-checks">
-                                <label>
-                                    <input name="supportImport" class="switch" type="checkbox" ${bean.supportImport?"checked":""}/>
-                                    <span>导入</span>
-                                </label>
-                                <label>
-                                    <input name="supportExport" class="switch" type="checkbox" ${bean.supportExport?"checked":""}/>
-                                    <span>导出</span>
-                                </label>
-                                <label>
-                                    <input name="supportLog" class="switch" type="checkbox" ${bean.supportLog?"checked":""}/>
-                                    <span>日志</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2">
+                        <div class="col-sm-offset-2 col-sm-9">
                             <button type="button" class="btn btn-primary btnSaveTable">
                                 <i class="fa fa-save"> 确定</i>
                             </button>
@@ -152,8 +160,6 @@
         </div>
     </div>
 </div>
-<script src="${ctxPath}/static/js/plugins/validate/jquery.validate.min.js"></script>
-<script src="${ctxPath}/static/js/plugins/validate/messages_zh.min.js"></script>
 <script type="text/javascript">
     //<![CDATA[
     var ctxPath = "${ctxPath}";
@@ -185,6 +191,10 @@
                     function (data) {
                         layer.closeAll('loading');
                         if (data.code == 0) {
+                            var $table = parent.$("#table");
+                            if ($table) {
+                                $table.bootstrapTable("refresh");
+                            }
                             layer.msg('保存成功', {icon: 6, time: 2000});
                         } else {
                             alertError(data.msg);

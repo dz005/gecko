@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.service.IService;
  * </p>
  *
  * @author zhi.deng
- * @since 2018-06-08
+ * @since 2018-06-12
  */
 public interface ITemplateService extends IService<Template> {
 
