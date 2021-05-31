@@ -22,6 +22,7 @@ public class Application extends SpringBootServletInitializer {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
+        //测试code review
         SpringApplication.run(Application.class, args);
     }
 }
