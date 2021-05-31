@@ -16,6 +16,11 @@ public class Application extends SpringBootServletInitializer {
         return builder.sources(Application.class);
     }
 
+    /**
+     * 系统主入口
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
     }
