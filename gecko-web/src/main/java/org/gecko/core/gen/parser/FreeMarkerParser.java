@@ -59,10 +59,6 @@ public class FreeMarkerParser implements Parser {
     }
 
     public static void main(String[] args) throws Exception {
-        String credential="RERFSWdRQWdsckQ0aGRFcytqcUZFcUNwMEU3WndpUWFiNW1uTHZYeXczSEZVRlNiQ2Y4Tm44UjFHa2xhOVZRSElsaWhmUFFZdFlaY081R01MTDMvcmEwMzJwNEpPdlh1UDlsdXBDR0FEWlVTNjFoQm5VOW9iL0FRMkgwUDB4dklpSnpIUTN3Mm93MU9sMHJPUkhjK3h2L1J4RlVEOHYvKz9hcHBJZD0xJmtleUlkPTE%3D";
-        credential = URLDecoder.decode(credential, "UTF-8");
-        credential = new String(Base64.decodeBase64((credential)));
-        System.out.println(credential);
 
 //        GenTemplate template = new GenTemplate();
 //        template.setContent("hi ${g.author}");
